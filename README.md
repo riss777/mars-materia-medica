@@ -12,7 +12,7 @@ of the artist.
 
 These materials are protected under U.S. copyright law.
 
-##License
+## License
 This project is NOT open source.
 
 The concepts, names, worldbuilding systems, remedies, interfaces, and 
