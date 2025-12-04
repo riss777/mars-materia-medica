@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="author" content="Lyrissa Nicole">
     <meta name="copyright" content="© 2025 Lyrissa Nicole. All narrative, artwork, and worldbuilding are original works of the artist.">
     <meta name="description" content="Mars Materia Medica - Healing remedies for the Mars bioregion community">
@@ -10,6 +10,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Logo styling handled by SVG */
+        /* Prevent double-tap zoom on buttons */
+        button {
+            touch-action: manipulation;
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100">
