@@ -7,107 +7,852 @@
     <meta name="copyright" content="© 2025 Lyrissa Nicole. All narrative, artwork, and worldbuilding are original works of the artist.">
     <meta name="description" content="Mars Materia Medica - Healing remedies for the Mars bioregion community">
     <title>Mars Materia Medica</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* Logo styling handled by SVG */
-        /* Prevent double-tap zoom on buttons */
-        button {
-            touch-action: manipulation;
+        :root {
+            --deep-ocean: #0a0808;
+            --night-sky: #110e0e;
+            --twilight: #1a1415;
+            --mist: #221a1b;
+            --sage: #358272;
+            --sage-glow: #56b8a2;
+            --sage-soft: rgba(56, 140, 118, 0.12);
+            --sage-border: rgba(56, 140, 118, 0.3);
+            --warmth: #c4564e;
+            --warmth-glow: #db6e66;
+            --warmth-soft: rgba(196, 86, 78, 0.10);
+            --warmth-border: rgba(196, 86, 78, 0.3);
+            --ember: #6b2a27;
+            --ember-soft: rgba(107, 42, 39, 0.15);
+            --text-primary: #f0e8e0;
+            --text-secondary: #c4b5a6;
+            --text-muted: #9a8b7e;
+            --border-subtle: rgba(154, 139, 126, 0.18);
+            --border-hover: rgba(86, 184, 162, 0.25);
+            --focus-ring: #56b8a2;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--deep-ocean);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-weight: 400;
+            line-height: 1.7;
+        }
+
+        /* Subtle atmospheric background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(107, 42, 39, 0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 50% at 80% 80%, rgba(45, 106, 90, 0.04) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 50% 50%, rgba(107, 42, 39, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+        }
+
+        button { touch-action: manipulation; font-family: 'Nunito', sans-serif; }
+
+        /* Accessibility: focus indicators */
+        *:focus-visible {
+            outline: 2px solid var(--focus-ring);
+            outline-offset: 2px;
+        }
+
+        button:focus-visible {
+            outline: 2px solid var(--focus-ring);
+            outline-offset: 2px;
+        }
+
+        /* Skip to content */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 1rem;
+            background: var(--sage);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0 0 0.5rem 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 100;
+            text-decoration: none;
+            transition: top 0.2s;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Header */
+        .site-header {
+            border-bottom: 1px solid var(--border-subtle);
+            background: rgba(17, 14, 14, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-inner {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .header-inner { padding: 1.75rem 1.5rem; }
+        }
+
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        @media (min-width: 768px) {
+            .logo-text { font-size: 2.2rem; }
+        }
+
+        .logo-text span {
+            color: var(--sage-glow);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .contact-info {
+                flex-direction: row;
+                gap: 1.5rem;
+            }
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+        }
+
+        @media (min-width: 768px) {
+            .contact-item { font-size: 0.8rem; }
+        }
+
+        .cart-btn {
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .cart-btn:hover {
+            background: var(--sage-soft);
+            color: var(--sage-glow);
+        }
+
+        .cart-badge {
+            display: none;
+            position: absolute;
+            top: -0.25rem;
+            right: -0.25rem;
+            background: var(--warmth);
+            color: white;
+            font-size: 0.6rem;
+            width: 1.1rem;
+            height: 1.1rem;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .cart-badge.show { display: flex; }
+
+        @media (min-width: 768px) {
+            .cart-btn { padding: 0.75rem; }
+            .cart-badge { width: 1.25rem; height: 1.25rem; font-size: 0.7rem; }
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        @media (min-width: 768px) {
+            .page-title { font-size: 2.8rem; }
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 400;
+            max-width: 36rem;
+            line-height: 1.8;
+        }
+
+        /* Notice Banner */
+        .notice-banner {
+            background: var(--sage-soft);
+            border: 1px solid var(--sage-border);
+            border-radius: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .notice-icon {
+            color: var(--sage-glow);
+            flex-shrink: 0;
+            margin-top: 0.15rem;
+        }
+
+        .notice-title {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--sage-glow);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .notice-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .product-card {
+            border: 1px solid var(--border-subtle);
+            background: rgba(17, 14, 14, 0.5);
+            padding: 1.75rem;
+            border-radius: 0.75rem;
+            transition: all 0.4s ease;
+        }
+
+        .product-card:hover {
+            border-color: var(--border-hover);
+            background: rgba(26, 20, 21, 0.6);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            gap: 0.75rem;
+        }
+
+        .product-name {
+            font-size: 1.5rem;
+            color: var(--sage-glow);
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-weight: 400;
+        }
+
+        .product-name:hover { color: #5bbaa8; }
+
+        .product-subtitle {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            font-family: 'Nunito', sans-serif;
+            letter-spacing: 0.03em;
+        }
+
+        .product-maker {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .controlled-tag {
+            padding: 0.25rem 0.6rem;
+            background: var(--warmth-soft);
+            border: 1px solid var(--warmth-border);
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            color: var(--warmth-glow);
+            white-space: nowrap;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .product-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+        }
+
+        .product-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .price-main {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+
+        .price-alt {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        .price-soul {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            min-height: 2.75rem;
+            border-radius: 0.4rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            white-space: nowrap;
+        }
+
+        .btn-details {
+            background: var(--twilight);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-details:hover {
+            background: var(--mist);
+            color: var(--text-primary);
+        }
+
+        .btn-add {
+            background: var(--sage);
+            color: white;
+        }
+
+        .btn-add:hover {
+            background: var(--sage-glow);
+        }
+
+        .btn-checkout-primary {
+            background: var(--warmth);
+            color: white;
+            width: 100%;
+            padding: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn-checkout-primary:hover {
+            background: var(--warmth-glow);
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--twilight);
+            border-radius: 0.4rem;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .quantity-control button {
+            padding: 0.5rem;
+            min-width: 2.75rem;
+            min-height: 2.75rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .quantity-control button:hover {
+            background: rgba(107, 42, 39, 0.15);
+            color: var(--sage-glow);
+        }
+
+        .quantity-control span {
+            font-size: 0.8rem;
+            padding: 0 0.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Modals */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 3, 3, 0.88);
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 50;
+            overflow-y: auto;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal-box {
+            background: var(--night-sky);
+            border: 1px solid var(--border-subtle);
+            border-radius: 0.75rem;
+            max-width: 40rem;
+            width: 100%;
+            margin: 2rem auto;
+        }
+
+        .modal-box.small { max-width: 28rem; }
+
+        .modal-body { padding: 2rem; }
+
+        .modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            color: var(--sage-glow);
+            font-weight: 400;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover { color: var(--warmth-glow); }
+
+        .detail-section {
+            margin-bottom: 1.25rem;
+        }
+
+        .detail-label {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.02em;
+        }
+
+        .detail-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .detail-caution {
+            color: #e8b84a;
+            font-size: 0.9rem;
+        }
+
+        .controlled-notice {
+            background: var(--sage-soft);
+            border: 1px solid var(--sage-border);
+            border-radius: 0.5rem;
+            padding: 0.85rem 1rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .price-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border-subtle);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .modal-actions .btn { flex: 1; padding: 0.75rem; }
+
+        .btn-secondary {
+            background: var(--twilight);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            background: var(--mist);
+        }
+
+        /* Cart modal */
+        .cart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .cart-header h3 {
+            font-size: 1.3rem;
+            font-weight: 300;
+        }
+
+        .cart-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .cart-total-section {
+            display: none;
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .cart-total-section.show { display: block; }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .cart-item-name {
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .cart-item-price {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .cart-empty {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 3rem 0;
+            font-size: 0.9rem;
+        }
+
+        .cart-total-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cart-total-main {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+
+        /* Floating checkout */
+        .floating-checkout {
+            display: none;
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: var(--warmth);
+            color: white;
+            padding: 0.65rem 1.1rem;
+            border-radius: 2rem;
+            border: none;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 20px rgba(168, 66, 59, 0.3);
+            transition: all 0.3s ease;
+            z-index: 40;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .floating-checkout.show { display: flex; }
+
+        .floating-checkout:hover {
+            background: var(--warmth-glow);
+            transform: translateY(-2px);
+        }
+
+        @media (min-width: 768px) {
+            .floating-checkout {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Error modal */
+        .error-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--warmth);
+        }
+
+        .error-title {
+            font-size: 1.8rem;
+            color: var(--warmth-glow);
+            margin-bottom: 1rem;
+        }
+
+        .error-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+        }
+
+        .error-small {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer */
+        .site-footer {
+            border-top: 1px solid var(--border-subtle);
+            background: rgba(17, 14, 14, 0.3);
+            margin-top: 5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-inner {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .footer-inner p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            line-height: 1.8;
+        }
+
+        .footer-inner p:last-child {
+            opacity: 0.7;
+        }
+
+        /* Dosage sub-price */
+        .dosage-price-section {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .dosage-label {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .dosage-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .product-card:nth-child(2) { animation-delay: 0.08s; }
+        .product-card:nth-child(3) { animation-delay: 0.16s; }
+        .product-card:nth-child(4) { animation-delay: 0.24s; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100">
+<body>
+    <!-- Skip Navigation -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Header -->
-    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur">
-        <div class="max-w-6xl mx-auto px-4 py-4 md:py-6">
-            <div class="flex items-start justify-between gap-4">
-                <div class="flex-1 min-w-0">
-                    <!-- Logo -->
-                    <img src="logo.svg" alt="Mars Materia Medica" class="h-12 md:h-20 mb-2 -ml-2 md:-ml-3" />
-                    
-                    <!-- Contact info below logo -->
-                    <div class="flex flex-col md:flex-row md:items-center gap-1 md:gap-4 text-[10px] md:text-xs text-slate-400 ml-0">
-                        <span class="flex items-center gap-1">
-                            <svg width="10" height="10" class="md:w-3 md:h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            Pod 3 Station 5896, Mars Bioregion 38569
-                        </span>
-                        <span class="flex items-center gap-1">
-                            <svg width="10" height="10" class="md:w-3 md:h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                            </svg>
-                            (38569) 5896-00
-                        </span>
-                    </div>
+    <header class="site-header">
+        <div class="header-inner">
+            <div style="flex:1; min-width:0;">
+                <div class="logo-text">Mars <span>Materia Medica</span></div>
+                <div class="contact-info">
+                    <span class="contact-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        Pod 3 Station 5896, Mars Bioregion 38569
+                    </span>
+                    <span class="contact-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        (38569) 5896-00
+                    </span>
                 </div>
-                
-                <button onclick="toggleCart()" class="relative p-2 md:p-3 hover:bg-slate-800 rounded-lg transition-colors flex-shrink-0">
-                    <svg width="20" height="20" class="md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span id="cart-badge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center text-[10px] md:text-xs"></span>
-                </button>
             </div>
+
+            <button class="cart-btn" onclick="toggleCart()" aria-label="Open shopping cart">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span id="cart-badge" class="cart-badge"></span>
+            </button>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 py-12">
-        <div class="mb-8">
-            <h2 class="text-3xl font-light mb-2">Healing Remedies</h2>
-            <p class="text-slate-400 text-sm">Traditional and bioregional medicines for our community</p>
+    <main class="main-content" id="main-content">
+        <div style="margin-bottom: 2rem;">
+            <h2 class="page-title">Healing Remedies</h2>
+            <p class="page-subtitle">Gentle, trusted medicines crafted with care for everyone in our community</p>
         </div>
 
         <!-- Notice Banner -->
-        <div class="bg-slate-900/50 border border-slate-700 rounded-lg p-4 mb-8 flex items-start gap-3">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400 flex-shrink-0 mt-0.5">
+        <div class="notice-banner">
+            <svg class="notice-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="12" y1="8" x2="12" y2="12"></line>
                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
-            <div class="text-sm">
-                <p class="text-slate-300 font-medium mb-1">Community Members</p>
-                <p class="text-slate-400">All remedies are available for immediate delivery within the bioregion. Prescriptions on file will be verified at checkout.</p>
+            <div>
+                <p class="notice-title">Welcome, Neighbors</p>
+                <p class="notice-text">All remedies can be delivered right to your pod within the bioregion. If you have a prescription on file, we'll take care of the rest at checkout — no extra steps needed.</p>
             </div>
         </div>
 
         <!-- Product Grid -->
-        <div id="product-grid" class="grid md:grid-cols-2 gap-6"></div>
+        <div id="product-grid" class="product-grid"></div>
     </main>
 
     <!-- Product Detail Modal -->
-    <div id="product-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 overflow-y-auto">
-        <div class="bg-slate-900 border border-slate-800 rounded-lg max-w-2xl w-full my-8">
-            <div class="p-8" id="modal-content"></div>
+    <div id="product-modal" class="modal-overlay" role="dialog" aria-label="Product details" aria-modal="true">
+        <div class="modal-box">
+            <div class="modal-body" id="modal-content"></div>
         </div>
     </div>
 
     <!-- Cart Modal -->
-    <div id="cart-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 rounded-lg max-w-md w-full max-h-[80vh] overflow-hidden flex flex-col">
-            <div class="flex items-center justify-between p-6 border-b border-slate-800">
-                <h3 class="text-xl font-light">Your Cart</h3>
-                <button onclick="toggleCart()" class="hover:text-red-400">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <div id="cart-modal" class="modal-overlay" role="dialog" aria-label="Shopping cart" aria-modal="true">
+        <div class="modal-box small" style="max-height:80vh; overflow:hidden; display:flex; flex-direction:column;">
+            <div class="cart-header">
+                <h3>Your Cart</h3>
+                <button class="modal-close" onclick="toggleCart()" aria-label="Close cart">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                 </button>
             </div>
-            
-            <div class="flex-1 overflow-y-auto p-6" id="cart-items"></div>
-
-            <div id="cart-total" class="hidden p-6 border-t border-slate-800"></div>
+            <div class="cart-body" id="cart-items"></div>
+            <div id="cart-total" class="cart-total-section"></div>
         </div>
     </div>
 
     <!-- Floating Checkout Button -->
-    <button id="floating-checkout" onclick="toggleCart()" class="hidden fixed bottom-4 right-4 md:bottom-6 md:right-6 bg-red-600 hover:bg-red-700 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg transition-all z-40 flex items-center gap-2 text-sm md:text-base">
-        <svg width="18" height="18" class="md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <button id="floating-checkout" class="floating-checkout" onclick="toggleCart()" aria-label="Open cart to checkout">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <circle cx="9" cy="21" r="1"></circle>
             <circle cx="20" cy="21" r="1"></circle>
             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
@@ -116,49 +861,49 @@
     </button>
 
     <!-- Location Error Modal -->
-    <div id="error-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-red-900 rounded-lg max-w-md w-full p-8 text-center">
-            <div class="mb-4 text-red-500 text-6xl">⚠</div>
-            <h3 class="text-2xl font-light mb-4 text-red-400">Location Error</h3>
-            <p class="text-slate-300 mb-2">
-                Uh oh! It looks like you're outside of our delivery zone.
-            </p>
-            <p class="text-slate-400 text-sm mb-6">
-                Mars Materia Medica only serves residents within the bioregion. Your current location has been detected as Earth-based.
-            </p>
-            <p class="text-xs text-slate-500 mb-6">
-                For Earth healing needs, please contact a terrestrial healer.
-            </p>
-            <button onclick="closeError()" class="px-6 py-2 bg-slate-800 hover:bg-slate-700 rounded transition-colors">
-                Return to Remedies
-            </button>
+    <div id="error-modal" class="modal-overlay" role="alertdialog" aria-label="Location error" aria-modal="true">
+        <div class="modal-box small">
+            <div class="modal-body" style="text-align:center;">
+                <div class="error-icon" aria-hidden="true">⚠</div>
+                <h3 class="error-title">Location Error</h3>
+                <p class="error-text">
+                    Uh oh! It looks like you're outside of our delivery zone.
+                </p>
+                <p class="error-text" style="font-size:0.9rem; color:var(--text-secondary);">
+                    Mars Materia Medica only serves residents within the bioregion. Your current location has been detected as Earth-based.
+                </p>
+                <p class="error-small">
+                    For Earth healing needs, please contact a terrestrial healer.
+                </p>
+                <button class="btn btn-secondary" onclick="closeError()" style="margin:0 auto; padding:0.6rem 1.5rem;">
+                    Return to Remedies
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-800 bg-slate-900/30 mt-20">
-        <div class="max-w-6xl mx-auto px-4 py-8">
-            <div class="text-center text-slate-500 text-xs space-y-1">
-                <p>Mars Materia Medica © 150 Mars Bioregion Council</p>
-                <p>Licensed by Interplanetary Healing Council • Permit #MB-5896-MMM</p>
-                <p class="text-slate-600">Serving our community since 91</p>
-            </div>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p>Mars Materia Medica © 150 Mars Bioregion Council</p>
+            <p>Licensed by Interplanetary Healing Council • Permit #MB-5896-MMM</p>
+            <p>Serving our community since 91</p>
         </div>
     </footer>
 
     <script>
-        // Product data
+        // Product data — rewritten with warm, community-centered language
         const products = [
             {
                 id: 1,
                 name: "MeneMenses™",
                 subtitle: "CycleSync Protocol",
                 manufacturer: "Valetudo",
-                description: "Celestial synchronization formula for menstrual-lunar cycle alignment",
-                form: "A stabilized suspended red droplet in a clear liquid matrix, packaged in transparent glass vials",
-                use: "Supports synchronization of menstrual-celestial rhythms to maintain alignment necessary for parthenogenetic reproduction",
-                dosage: "Drink one full vial at each Phobos-Deimos syzygy",
-                regulation: "Requires prescription to verify non-pregnancy status, as the formula temporarily suspends embryonic implantation during cycle recalibration",
+                description: "A gentle cycle-support remedy that helps your body stay in rhythm with the celestial patterns that guide us here on Mars.",
+                form: "A beautiful, suspended red droplet resting in a clear liquid — each dose comes in its own small glass vial, easy to hold and take",
+                use: "Helps keep your menstrual cycle in harmony with the Phobos-Deimos rhythm, which is an important part of how our bodies naturally sustain and nourish themselves here",
+                dosage: "Drink one full vial at each Phobos-Deimos syzygy — you'll feel the rhythm when it's time",
+                regulation: "We'll check your prescription at checkout to make sure this is a good fit for where you are right now. This remedy pauses embryonic implantation while your cycle recalibrates, so it's only given when pregnancy is not present",
                 price: { seeds: 4, cc: 0.2, st: 0.001 },
                 controlled: false
             },
@@ -166,11 +911,11 @@
                 id: 2,
                 name: "Gunentheogen™",
                 manufacturer: "Valetudo",
-                description: "Hybrid entheogenic compound for ceremonial and ancestral connection",
-                form: "A hybrid entheogenic compound derived from Earth-origin mycelium interwoven with native fungal networks",
-                use: "Administered during ceremonies, rites, and ritual practices to activate ancestral connection with Earth and enhance bio-spiritual harmonization with the planetary ecosystem",
-                dosage: "Infuse 15 grams of compound in 250 grams of water via overnight cold extraction. Consume within 3 days to ensure full potency",
-                regulation: "Healer's guidance required due to its high potency and the ritual knowledge necessary for safe administration",
+                description: "A sacred, Earth-rooted mycelium blend used in ceremony to deepen our connection to the ancestors and to this living world around us.",
+                form: "A living compound grown from Earth-origin mycelium woven together with the native fungal networks of our bioregion — you can feel its warmth in your hands",
+                use: "Shared during ceremonies, rites, and community rituals to open a deeper channel to our Earth ancestors and to strengthen the spiritual bond between our bodies and the land we call home now",
+                dosage: "Steep 15 grams in 250 grams of water overnight as a cold infusion. Best enjoyed within 3 days to keep its full strength",
+                regulation: "Because of how powerful this remedy is, it's always used with guidance from a healer who understands the ritual traditions — this keeps everyone safe and supported",
                 price: { seeds: 24, cc: 1.2, st: 0.006 },
                 controlled: true
             },
@@ -178,12 +923,12 @@
                 id: 3,
                 name: "TerraSoil™",
                 manufacturer: "Valetudo",
-                description: "Micro-mineralized Earth substrate for cellular stabilization",
-                form: "Hydroxypropyl methylcellulose capsules with micro-mineralized Earth rock aggregate",
-                use: "Administered to Earth-origin males to prevent rapid cellular degradation and restore cellular stability destabilized by the atmospheric and ionic conditions",
-                dosage: "1 capsule by mouth 3 times daily. A minimum of 30 minutes of full-spectrum light exposure is required at each administration to activate cellular uptake",
-                precautions: "May cause drowsiness",
-                regulation: "Prescription-restricted controlled compound. Allocation is strictly rationed. Reserved for hospitalized, high-risk, or essential-sector males",
+                description: "An Earth-mineral capsule that helps the men in our community stay strong and grounded in our unique atmosphere.",
+                form: "A plant-based capsule filled with a concentrated blend of micro-minerals sourced from Earth rock — small, easy to swallow",
+                use: "Made especially for Earth-origin men whose cells need extra support to stay stable in our atmosphere and ionic environment. This remedy helps prevent rapid cellular wear and keeps the body resilient",
+                dosage: "Take 1 capsule by mouth 3 times a day. Each time, spend at least 30 minutes in full-spectrum light so the minerals can activate and do their work",
+                precautions: "You may feel sleepy — that's normal, and it means the remedy is settling in",
+                regulation: "This one is carefully rationed because the mineral sources are limited. It's reserved for those who need it most — folks in the hospital, those at higher risk, and essential-sector community members",
                 price: { seeds: 2, cc: 0.1, st: 0.0005 },
                 controlled: true
             },
@@ -192,13 +937,13 @@
                 name: "AnodeDiffusion™",
                 subtitle: "Renal Ionic Diffusion Modulator, Type I",
                 manufacturer: "Valetudo",
-                description: "Sublingual ionic discharge system for renal support during ionic storms",
+                description: "A grounding device that gently helps the body release excess ions after storms — keeping kidneys healthy and blood balanced.",
                 form: "Renal Ionic Diffusion Modulator, Type I",
-                deliverySystem: "Delivered via sublingual metal conductor placed beneath the tongue connected by copper filament to a grounding vessel containing soil and active mycelium substrate, enabling regulated bio-electric ionic discharge",
-                use: "Supports Earth-origin male renal function by accelerating the discharge of excess negative ions absorbed during ionic storms, mitigating hazardous ion accumulation preventing the onset of Acidic Blood Syndrome",
-                dosage: "10 minutes twice a day. 20 minutes 3 times a day during ionic storms",
-                precautions: "For male use only. Female physiology maintains natural bio-electric grounding stability and does not require ionic modulation",
-                regulation: "Open-access. Available without prescription",
+                deliverySystem: "A small metal tab placed under the tongue, connected by a fine copper thread to a grounding vessel of soil and living mycelium. Together, they create a gentle path for your body to release built-up ions naturally and safely",
+                use: "Helps Earth-origin men move excess negative ions out of the body after ionic storms, protecting the kidneys and preventing Acidic Blood Syndrome before it starts",
+                dosage: "Use for 10 minutes, twice a day on calm days. During ionic storms, extend to 20 minutes, three times a day",
+                precautions: "Designed for male physiology. Women's bodies naturally stay grounded and balanced on their own — no ionic support needed",
+                regulation: "Available to everyone — no prescription required, just come by or order anytime",
                 price: { seeds: 4, cc: 0.2, st: 0.001 },
                 dosagePrice: { seeds: 1, cc: 0.05, st: 0.00025 }
             }
@@ -207,7 +952,11 @@
         // Cart state
         let cart = [];
 
-        // Initialize products
+        // SVG icons
+        const iconPlus = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
+        const iconMinus = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
+        const iconClose = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+
         function renderProducts() {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = products.map(product => {
@@ -215,53 +964,34 @@
                 const inCart = cartItem ? cartItem.quantity : 0;
 
                 return `
-                    <div class="border border-slate-800 bg-slate-900/30 p-6 rounded-lg hover:border-red-900/50 transition-colors">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="flex-1">
-                                <h3 class="text-2xl font-medium text-red-400 cursor-pointer hover:text-red-300" onclick="viewDetails(${product.id})">
-                                    ${product.name}
-                                </h3>
-                                ${product.subtitle ? `<p class="text-slate-500 text-xs mt-1">${product.subtitle}</p>` : ''}
-                                <p class="text-slate-500 text-xs mt-1">Prepared by ${product.manufacturer}</p>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div style="flex:1;">
+                                <h3 class="product-name" onclick="viewDetails(${product.id})">${product.name}</h3>
+                                ${product.subtitle ? `<p class="product-subtitle">${product.subtitle}</p>` : ''}
+                                <p class="product-maker">Lovingly prepared by ${product.manufacturer}</p>
                             </div>
-                            ${product.controlled ? '<span class="px-2 py-1 bg-red-900/30 border border-red-800 rounded text-xs text-red-300 whitespace-nowrap">CONTROLLED</span>' : ''}
+                            ${product.controlled ? `<span class="controlled-tag">Guided</span>` : ''}
                         </div>
                         
-                        <p class="text-slate-300 text-sm mb-4">${product.description}</p>
+                        <p class="product-desc">${product.description}</p>
                         
-                        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+                        <div class="product-footer">
                             <div>
-                                <div class="text-xl font-light">${product.price.seeds} seeds</div>
-                                <div class="text-sm text-slate-400">${product.price.cc} Contribution Credits</div>
-                                <div class="text-xs text-slate-500">${product.price.st} Soul Tokens</div>
+                                <div class="price-main">${product.price.seeds} seeds</div>
+                                <div class="price-alt">${product.price.cc} Contribution Credits</div>
+                                <div class="price-soul">${product.price.st} Soul Tokens</div>
                             </div>
-                            <div class="flex flex-col gap-2">
-                                <button onclick="viewDetails(${product.id})" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded transition-colors text-sm whitespace-nowrap">
-                                    View Details
-                                </button>
+                            <div class="btn-group">
+                                <button class="btn btn-details" onclick="viewDetails(${product.id})">Learn More</button>
                                 ${inCart > 0 ? `
-                                    <div class="flex items-center gap-2 bg-slate-800 rounded px-2 py-1">
-                                        <button onclick="updateQuantity(${product.id}, -1)" class="p-1 hover:bg-slate-700 rounded transition-colors">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                            </svg>
-                                        </button>
-                                        <span class="text-sm px-2">${inCart} in cart</span>
-                                        <button onclick="addToCart(${product.id})" class="p-1 hover:bg-slate-700 rounded transition-colors">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                            </svg>
-                                        </button>
+                                    <div class="quantity-control" role="group" aria-label="Quantity for ${product.name}">
+                                        <button onclick="updateQuantity(${product.id}, -1)" aria-label="Remove one ${product.name}">${iconMinus}</button>
+                                        <span>${inCart} in cart</span>
+                                        <button onclick="addToCart(${product.id})" aria-label="Add one more ${product.name}">${iconPlus}</button>
                                     </div>
                                 ` : `
-                                    <button onclick="addToCart(${product.id})" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded transition-colors text-sm flex items-center gap-2">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        </svg>
-                                        Add to Cart
-                                    </button>
+                                    <button class="btn btn-add" onclick="addToCart(${product.id})">${iconPlus} Add to Cart</button>
                                 `}
                             </div>
                         </div>
@@ -270,122 +1000,97 @@
             }).join('');
         }
 
-        // View product details
         function viewDetails(id) {
             const product = products.find(p => p.id === id);
             const cartItem = cart.find(item => item.id === id);
             const inCart = cartItem ? cartItem.quantity : 0;
 
-            const modalContent = `
-                <div class="flex items-start justify-between mb-4">
+            document.getElementById('modal-content').innerHTML = `
+                <div class="modal-header">
                     <div>
-                        <h3 class="text-3xl font-medium text-red-400 mb-1">${product.name}</h3>
-                        ${product.subtitle ? `<p class="text-slate-500 text-sm mb-2">${product.subtitle}</p>` : ''}
-                        <p class="text-slate-500 text-sm">Prepared by ${product.manufacturer}</p>
+                        <h3 class="modal-title">${product.name}</h3>
+                        ${product.subtitle ? `<p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.25rem;">${product.subtitle}</p>` : ''}
+                        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.25rem;">Lovingly prepared by ${product.manufacturer}</p>
                     </div>
-                    <button onclick="closeModal()" class="hover:text-red-400">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
+                    <button class="modal-close" onclick="closeModal()" aria-label="Close details">${iconClose}</button>
                 </div>
 
-                ${product.controlled ? '<div class="bg-slate-800/50 border border-slate-700 rounded p-3 mb-4"><p class="text-slate-300 text-sm">⚠ Controlled Remedy - Healer verification at checkout</p></div>' : ''}
+                ${product.controlled ? `<div class="controlled-notice">🌿 This is a guided remedy — a healer will confirm everything at checkout so you're fully supported.</div>` : ''}
                 
-                <div class="space-y-4 mb-6 text-sm">
-                    <div>
-                        <h4 class="text-slate-400 font-medium mb-2">Form</h4>
-                        <p class="text-slate-300">${product.form}</p>
+                <div style="margin-bottom:1.5rem;">
+                    <div class="detail-section">
+                        <div class="detail-label">What It Looks Like</div>
+                        <p class="detail-text">${product.form}</p>
                     </div>
 
                     ${product.deliverySystem ? `
-                        <div>
-                            <h4 class="text-slate-400 font-medium mb-2">Delivery System</h4>
-                            <p class="text-slate-300">${product.deliverySystem}</p>
+                        <div class="detail-section">
+                            <div class="detail-label">How It Works</div>
+                            <p class="detail-text">${product.deliverySystem}</p>
                         </div>
                     ` : ''}
 
-                    <div>
-                        <h4 class="text-slate-400 font-medium mb-2">Use</h4>
-                        <p class="text-slate-300">${product.use}</p>
+                    <div class="detail-section">
+                        <div class="detail-label">What It's For</div>
+                        <p class="detail-text">${product.use}</p>
                     </div>
 
-                    <div>
-                        <h4 class="text-slate-400 font-medium mb-2">Dosage & Administration</h4>
-                        <p class="text-slate-300">${product.dosage}</p>
+                    <div class="detail-section">
+                        <div class="detail-label">How to Take It</div>
+                        <p class="detail-text">${product.dosage}</p>
                     </div>
 
                     ${product.precautions ? `
-                        <div>
-                            <h4 class="text-slate-400 font-medium mb-2">Precautions</h4>
-                            <p class="text-amber-400">${product.precautions}</p>
+                        <div class="detail-section">
+                            <div class="detail-label">Good to Know</div>
+                            <p class="detail-caution">${product.precautions}</p>
                         </div>
                     ` : ''}
 
-                    <div>
-                        <h4 class="text-slate-400 font-medium mb-2">Regulation</h4>
-                        <p class="text-slate-300">${product.regulation}</p>
-                    </div>
-
-                    <div class="flex items-center justify-between pt-4 border-t border-slate-800">
-                        <div>
-                            <p class="text-slate-500 text-xs mb-1">Price per unit</p>
-                            <p class="text-2xl font-light mb-1">${product.price.seeds} seeds</p>
-                            <p class="text-sm text-slate-400">${product.price.cc} Contribution Credits</p>
-                            <p class="text-xs text-slate-500">${product.price.st} Soul Tokens</p>
-                            ${product.dosagePrice ? `
-                                <div class="mt-3 pt-3 border-t border-slate-700">
-                                    <p class="text-slate-500 text-xs mb-1">Per dosage refill</p>
-                                    <p class="text-lg font-light text-slate-300">${product.dosagePrice.seeds} seeds</p>
-                                    <p class="text-xs text-slate-400">${product.dosagePrice.cc} Contribution Credits</p>
-                                    <p class="text-xs text-slate-500">${product.dosagePrice.st} Soul Tokens</p>
-                                </div>
-                            ` : ''}
-                        </div>
+                    <div class="detail-section">
+                        <div class="detail-label">Availability</div>
+                        <p class="detail-text">${product.regulation}</p>
                     </div>
                 </div>
 
-                <div class="flex gap-3">
+                <div class="price-section">
+                    <div>
+                        <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:0.25rem;">Per unit</p>
+                        <div class="price-main" style="font-size:1.5rem;">${product.price.seeds} seeds</div>
+                        <div class="price-alt">${product.price.cc} Contribution Credits</div>
+                        <div class="price-soul">${product.price.st} Soul Tokens</div>
+                        ${product.dosagePrice ? `
+                            <div class="dosage-price-section">
+                                <div class="dosage-label">Refill per dosage</div>
+                                <div class="dosage-price">${product.dosagePrice.seeds} seeds</div>
+                                <div class="price-alt">${product.dosagePrice.cc} Contribution Credits</div>
+                                <div class="price-soul">${product.dosagePrice.st} Soul Tokens</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                <div class="modal-actions">
                     ${inCart > 0 ? `
-                        <div class="flex-1 flex items-center justify-center gap-3 bg-slate-800 rounded py-3">
-                            <button onclick="updateQuantity(${product.id}, -1)" class="p-2 hover:bg-slate-700 rounded transition-colors">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                            </button>
-                            <span class="text-lg px-3">${inCart} in cart</span>
-                            <button onclick="addToCart(${product.id})" class="p-2 hover:bg-slate-700 rounded transition-colors">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                            </button>
+                        <div class="quantity-control" style="flex:1; justify-content:center; padding:0.6rem;" role="group" aria-label="Quantity for ${product.name}">
+                            <button onclick="updateQuantity(${product.id}, -1)" aria-label="Remove one ${product.name}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                            <span style="font-size:1rem; padding:0 1rem;">${inCart} in cart</span>
+                            <button onclick="addToCart(${product.id})" aria-label="Add one more ${product.name}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
                         </div>
                     ` : `
-                        <button onclick="addToCart(${product.id})" class="flex-1 py-3 bg-red-600 hover:bg-red-700 rounded transition-colors flex items-center justify-center gap-2">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                            </svg>
-                            Add to Cart
-                        </button>
+                        <button class="btn btn-add" onclick="addToCart(${product.id})" style="flex:1; padding:0.75rem;">${iconPlus} Add to Cart</button>
                     `}
-                    <button onclick="closeModal()" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 rounded transition-colors">
-                        Close
-                    </button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Close</button>
                 </div>
             `;
 
-            document.getElementById('modal-content').innerHTML = modalContent;
-            document.getElementById('product-modal').classList.remove('hidden');
+            document.getElementById('product-modal').classList.add('show');
         }
 
         function closeModal() {
-            document.getElementById('product-modal').classList.add('hidden');
+            document.getElementById('product-modal').classList.remove('show');
         }
 
-        // Cart functions
         function addToCart(id) {
             const existing = cart.find(item => item.id === id);
             if (existing) {
@@ -395,29 +1100,17 @@
                 cart.push({ ...product, quantity: 1 });
             }
             updateCart();
-            
-            // If modal is open, refresh it
-            const modal = document.getElementById('product-modal');
-            if (!modal.classList.contains('hidden')) {
-                viewDetails(id);
-            }
+            if (document.getElementById('product-modal').classList.contains('show')) viewDetails(id);
         }
 
         function updateQuantity(id, delta) {
             const item = cart.find(item => item.id === id);
             if (item) {
                 item.quantity += delta;
-                if (item.quantity <= 0) {
-                    cart = cart.filter(i => i.id !== id);
-                }
+                if (item.quantity <= 0) cart = cart.filter(i => i.id !== id);
             }
             updateCart();
-            
-            // If modal is open, refresh it
-            const modal = document.getElementById('product-modal');
-            if (!modal.classList.contains('hidden')) {
-                viewDetails(id);
-            }
+            if (document.getElementById('product-modal').classList.contains('show')) viewDetails(id);
         }
 
         function updateCart() {
@@ -431,15 +1124,15 @@
             const badge = document.getElementById('cart-badge');
             const floatingCheckout = document.getElementById('floating-checkout');
             const floatingCheckoutText = document.getElementById('floating-checkout-text');
-            
+
             if (totalItems > 0) {
                 badge.textContent = totalItems;
-                badge.classList.remove('hidden');
-                floatingCheckout.classList.remove('hidden');
+                badge.classList.add('show');
+                floatingCheckout.classList.add('show');
                 floatingCheckoutText.textContent = `Checkout (${totalItems})`;
             } else {
-                badge.classList.add('hidden');
-                floatingCheckout.classList.add('hidden');
+                badge.classList.remove('show');
+                floatingCheckout.classList.remove('show');
             }
         }
 
@@ -448,28 +1141,19 @@
             const cartTotalDiv = document.getElementById('cart-total');
 
             if (cart.length === 0) {
-                cartItemsDiv.innerHTML = '<p class="text-slate-500 text-center py-8">Your cart is empty</p>';
-                cartTotalDiv.classList.add('hidden');
+                cartItemsDiv.innerHTML = `<p class="cart-empty">Nothing here yet — take your time browsing.</p>`;
+                cartTotalDiv.classList.remove('show');
             } else {
                 cartItemsDiv.innerHTML = cart.map(item => `
-                    <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
-                        <div class="flex-1">
-                            <h4 class="font-medium text-sm">${item.name}</h4>
-                            <p class="text-slate-400 text-xs">${item.price.seeds} seeds each</p>
+                    <div class="cart-item">
+                        <div style="flex:1;">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.price.seeds} seeds each</div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="updateQuantity(${item.id}, -1)" class="p-1 hover:bg-slate-800 rounded">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                            </button>
-                            <span class="w-8 text-center">${item.quantity}</span>
-                            <button onclick="updateQuantity(${item.id}, 1)" class="p-1 hover:bg-slate-800 rounded">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                            </button>
+                        <div class="quantity-control" role="group" aria-label="Quantity for ${item.name}">
+                            <button onclick="updateQuantity(${item.id}, -1)" aria-label="Remove one ${item.name}">${iconMinus}</button>
+                            <span style="width:2rem; text-align:center;">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" aria-label="Add one more ${item.name}">${iconPlus}</button>
                         </div>
                     </div>
                 `).join('');
@@ -479,44 +1163,64 @@
                 const totalST = (totalPrice / 4000).toFixed(5);
 
                 cartTotalDiv.innerHTML = `
-                    <div class="mb-4">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-slate-400">Total</span>
-                            <span class="text-2xl font-light">${totalPrice} seeds</span>
+                    <div style="margin-bottom:1rem;">
+                        <div class="cart-total-row" style="margin-bottom:0.25rem;">
+                            <span style="color:var(--text-muted);">Total</span>
+                            <span class="cart-total-main">${totalPrice} seeds</span>
                         </div>
-                        <div class="flex items-center justify-between text-sm text-slate-400">
+                        <div class="cart-total-row">
                             <span></span>
-                            <span>${totalCC} Contribution Credits</span>
+                            <span class="price-alt">${totalCC} Contribution Credits</span>
                         </div>
-                        <div class="flex items-center justify-between text-xs text-slate-500">
+                        <div class="cart-total-row">
                             <span></span>
-                            <span>${totalST} Soul Tokens</span>
+                            <span class="price-soul">${totalST} Soul Tokens</span>
                         </div>
                     </div>
-                    <button onclick="checkout()" class="w-full py-3 bg-red-600 hover:bg-red-700 rounded transition-colors font-medium">
-                        Proceed to Checkout
-                    </button>
+                    <button class="btn btn-checkout-primary" onclick="checkout()">Proceed to Checkout</button>
                 `;
-                cartTotalDiv.classList.remove('hidden');
+                cartTotalDiv.classList.add('show');
             }
         }
 
         function toggleCart() {
-            const modal = document.getElementById('cart-modal');
-            modal.classList.toggle('hidden');
+            document.getElementById('cart-modal').classList.toggle('show');
         }
 
         function checkout() {
-            document.getElementById('cart-modal').classList.add('hidden');
-            document.getElementById('error-modal').classList.remove('hidden');
+            document.getElementById('cart-modal').classList.remove('show');
+            document.getElementById('error-modal').classList.add('show');
         }
 
         function closeError() {
-            document.getElementById('error-modal').classList.add('hidden');
+            document.getElementById('error-modal').classList.remove('show');
         }
 
         // Initialize
         renderProducts();
+
+        // Keyboard accessibility: Escape closes modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const productModal = document.getElementById('product-modal');
+                const cartModal = document.getElementById('cart-modal');
+                const errorModal = document.getElementById('error-modal');
+                if (errorModal.classList.contains('show')) { closeError(); }
+                else if (cartModal.classList.contains('show')) { toggleCart(); }
+                else if (productModal.classList.contains('show')) { closeModal(); }
+            }
+        });
+
+        // Close modals on overlay click
+        ['product-modal', 'cart-modal', 'error-modal'].forEach(id => {
+            document.getElementById(id).addEventListener('click', function(e) {
+                if (e.target === this) {
+                    if (id === 'product-modal') closeModal();
+                    else if (id === 'cart-modal') toggleCart();
+                    else closeError();
+                }
+            });
+        });
     </script>
 </body>
 </html>
