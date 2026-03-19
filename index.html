@@ -121,21 +121,14 @@
             .header-inner { padding: 1.75rem 1.5rem; }
         }
 
-        .logo-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
-            font-weight: 400;
-            letter-spacing: 0.04em;
-            color: var(--text-primary);
-            line-height: 1.2;
+        .logo-img {
+            height: 3rem;
+            margin-bottom: 0.5rem;
+            margin-left: -0.5rem;
         }
 
         @media (min-width: 768px) {
-            .logo-text { font-size: 2.2rem; }
-        }
-
-        .logo-text span {
-            color: var(--sage-glow);
+            .logo-img { height: 5rem; margin-left: -0.75rem; }
         }
 
         .contact-info {
@@ -773,7 +766,7 @@
     <header class="site-header">
         <div class="header-inner">
             <div style="flex:1; min-width:0;">
-                <div class="logo-text">Mars <span>Materia Medica</span></div>
+                <img src="logo.svg" alt="Mars Materia Medica" class="logo-img" />
                 <div class="contact-info">
                     <span class="contact-item">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
